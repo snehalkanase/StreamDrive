@@ -5,9 +5,9 @@ mongoose
   .connect(URL)
   .then(() => {
     console.log("Database connected successfully");
-    connection = mongoose.connection; // Assign mongoose connection to variable
+    connection = mongoose.connection;
   })
   .catch((err) => {
     console.log(`Database connection error: ${err}`);
     process.exit();
-  });
+  }); 
