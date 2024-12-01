@@ -48,11 +48,24 @@ exports.getFile = async (req, res) => {
 };
 
 exports.getLimit = async (req, res) => {
-  const limit = await Limit.findOne();
-  if (limit) {
-    res.status(200).json(limit);
-  } else {
-    res.status(404).json({ error: "Something Went Wrong" });
+  try {
+    let limit = await Limit.findOne();
+    if (!limit) {
+      limit = new Limit({
+        total: 400,
+        doc: 100,
+        img: 100,
+        other: 100,
+        video: 100
+      });
+      await limit.save();
+      console.log("Default limit created successfully!");
+    }
+    return res.status(200).json(limit);
+
+  } catch (error) {
+    console.error("Error retrieving limit:", error);
+    return res.status(500).json({ error: "Server error while retrieving limit." });
   }
 };
 
